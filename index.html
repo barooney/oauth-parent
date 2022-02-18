@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Start an OAuth flow</title>
+</head>
+<body>
+	<button id="start-oauth">Start OAuth flow</button>
+	<div id="status">authentication status</div>
+	<div id="token"></div>
+	<script>
+		document.getElementById("start-oauth").onclick = function() {
+			document.getElementById("status").textContent = "Popup opened";
+			var popup = window.open("/oauth-server/login.php", "login", "width=200,height=200");
+			window.addEventListener("message", (event) => {
+				console.log(event);
+				document.getElementById("status").textContent = "Authenticated as " + event.data.user;
+				document.getElementById("token").textContent = "Your token is " + event.data.token;
+				popup.close();
+			}, false);
+		};
+	</script>
+</body>
+</html>
